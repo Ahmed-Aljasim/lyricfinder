@@ -11,6 +11,11 @@ const reducer = (state, action) => {
         track_list: action.payload,
         heading: 'Search Results'
       };
+    case 'SAVE_TRACK_DATA':
+      return {
+        ...state,
+        selectedTrack: action.payload
+      };
     default:
       return state;
   }
@@ -20,6 +25,7 @@ export class Provider extends Component {
   state = {
     track_list: [],
     heading: 'Top 10 Tracks',
+    selectedTrack: {},
     dispatch: action => this.setState(state => reducer(state, action))
   };
 
@@ -27,7 +33,7 @@ export class Provider extends Component {
     axios
       .get(
         `https://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=10&country=us&f_has_lyrics=1&apikey=${
-          process.env.REACT_APP_MM_KEY
+        process.env.REACT_APP_MM_KEY
         }`
       )
       .then(res => {
